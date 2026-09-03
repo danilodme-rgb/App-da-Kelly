@@ -16,7 +16,7 @@ estado normal, não falha. O que ela impede é a lição sumir sem ninguém ver.
 
 ## Abertas
 
-- [ ] **Troca textual de marcador em molde acerta o comentário, não o código.** O build
+- [x] **Troca textual de marcador em molde acerta o comentário, não o código.** O build
   trocava `__BUILD__` no `sw.js` com `String.replace`, que troca só a **primeira**
   ocorrência — e a primeira era o comentário que explicava a troca. O arquivo publicado
   saiu com o marcador intacto e o comentário carimbado; a versão do cache virou a palavra
@@ -26,7 +26,7 @@ estado normal, não falha. O que ela impede é a lição sumir sem ninguém ver.
   ainda não é regra: *substituição textual de marcador acerta a primeira ocorrência, e a
   primeira costuma ser a documentação da própria substituição.*
 
-- [ ] **Repositório vazio adota como padrão o primeiro branch que chega.** O `App-da-Kelly`
+- [x] **Repositório vazio adota como padrão o primeiro branch que chega.** O `App-da-Kelly`
   foi criado sem nenhum commit; a API dizia `default_branch: main`, mas essa `main` não
   existia. O primeiro push foi num branch de trabalho, e o GitHub o promoveu a padrão. A
   varredura das cópias lê o branch **padrão** — passou a conferir o branch de trabalho, e
@@ -35,7 +35,7 @@ estado normal, não falha. O que ela impede é a lição sumir sem ninguém ver.
   regra: *em repositório recém-criado, o branch padrão só é o que você acha que é depois do
   primeiro push — conferir, e conferir depois de empurrar, não antes.*
 
-- [ ] **A sessão que publica pode não conseguir abrir o que publicou.** Medido em 03/09/2026:
+- [x] **A sessão que publica pode não conseguir abrir o que publicou.** Medido em 03/09/2026:
   a política de rede desta sessão recusa `danilodme-rgb.github.io` (403 no CONNECT), então
   "publicou" e "o endereço responde" são afirmações diferentes, e eu só alcanço a primeira.
   Antes de medir, cheguei a dizer que o endereço "dava 404" — era inferência a partir do
