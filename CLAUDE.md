@@ -279,7 +279,11 @@ sozinha, e confirmar que o app **ainda abre offline**.
   Instalar a versão 1, publicar a 2 e ver a tela trocar sozinha é conferência
   à mão. Teste de função pura passa verde com essa lógica errada.
 - **A publicação em si não é conferida por aqui**: o workflow diz que
-  publicou; quem prova que o endereço responde é abrir o endereço.
+  publicou; quem prova que o endereço responde é abrir o endereço. ⚠ E a
+  sessão de nuvem **não consegue** abri-lo: medido em 03/09/2026, a política
+  de rede recusa `danilodme-rgb.github.io:443` com 403 no CONNECT. Ou seja,
+  "o job publicou" é o máximo que eu consigo afirmar daqui; quem abre o
+  endereço é uma pessoa, num navegador de verdade.
 - **Ligar o GitHub Pages a primeira vez é passo de pessoa.** O workflow pede
   para criar o site sozinho (`enablement: true`) e, medido em 03/09/2026, o
   token do Actions responde `Resource not accessible by integration`. Sem o

@@ -34,3 +34,12 @@ estado normal, não falha. O que ela impede é a lição sumir sem ninguém ver.
   (regra 8c/16e), e sem sinal nenhum. Medido em 03/09/2026. A generalização que ainda não é
   regra: *em repositório recém-criado, o branch padrão só é o que você acha que é depois do
   primeiro push — conferir, e conferir depois de empurrar, não antes.*
+
+- [ ] **A sessão que publica pode não conseguir abrir o que publicou.** Medido em 03/09/2026:
+  a política de rede desta sessão recusa `danilodme-rgb.github.io` (403 no CONNECT), então
+  "publicou" e "o endereço responde" são afirmações diferentes, e eu só alcanço a primeira.
+  Antes de medir, cheguei a dizer que o endereço "dava 404" — era inferência a partir do
+  deploy vermelho, não medição, e um `curl` bloqueado pelo proxy é indistinguível de um 404
+  para quem só olha "não veio nada". A generalização que ainda não é regra: *quando a
+  conferência sai pela rede, distinguir "reprovou" de "não consegui chegar lá" faz parte da
+  conferência — sem isso, bloqueio de rede vira laudo sobre o produto.*
