@@ -25,3 +25,12 @@ estado normal, não falha. O que ela impede é a lição sumir sem ninguém ver.
   ocorrências, e o comentário **não escrever o marcador por extenso**. A generalização que
   ainda não é regra: *substituição textual de marcador acerta a primeira ocorrência, e a
   primeira costuma ser a documentação da própria substituição.*
+
+- [ ] **Repositório vazio adota como padrão o primeiro branch que chega.** O `App-da-Kelly`
+  foi criado sem nenhum commit; a API dizia `default_branch: main`, mas essa `main` não
+  existia. O primeiro push foi num branch de trabalho, e o GitHub o promoveu a padrão. A
+  varredura das cópias lê o branch **padrão** — passou a conferir o branch de trabalho, e
+  ficaria verde para sempre enquanto a `main` andasse sozinha: verde por não ter procurado
+  (regra 8c/16e), e sem sinal nenhum. Medido em 03/09/2026. A generalização que ainda não é
+  regra: *em repositório recém-criado, o branch padrão só é o que você acha que é depois do
+  primeiro push — conferir, e conferir depois de empurrar, não antes.*

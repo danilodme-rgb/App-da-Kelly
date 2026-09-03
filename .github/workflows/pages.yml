@@ -46,10 +46,17 @@ jobs:
       - name: Conferência de fumaça do que vai ao ar
         run: npm run fumaca
 
-      # `enablement: true` liga o GitHub Pages sozinho na primeira execução,
-      # em vez de exigir alguém marcando "Source: GitHub Actions" no painel.
-      # Ajuste que só existe no painel não viaja para a próxima sessão nem
-      # para ninguém; versionado vence local (regra 13b).
+      # `enablement: true` pede para o próprio workflow criar o site do
+      # Pages, para o ajuste não depender de alguém lembrar de marcar uma
+      # caixa no painel (regra 13b). ⚠ Medido em 03/09/2026, na primeira
+      # execução deste repositório: NÃO basta. O token do Actions responde
+      # `Resource not accessible by integration` ao criar o site, e o job
+      # fica vermelho — que é o certo, porque ele não publicou nada.
+      #
+      # Ou seja: ligar o Pages a primeira vez continua sendo um passo de
+      # pessoa, uma vez só, em Settings → Pages → Source: GitHub Actions.
+      # A linha fica porque, com o site já ligado, ela não atrapalha, e
+      # porque é ela que documenta a tentativa que foi medida.
       - uses: actions/configure-pages@v5
         with:
           enablement: true

@@ -280,6 +280,18 @@ sozinha, e confirmar que o app **ainda abre offline**.
   à mão. Teste de função pura passa verde com essa lógica errada.
 - **A publicação em si não é conferida por aqui**: o workflow diz que
   publicou; quem prova que o endereço responde é abrir o endereço.
+- **Ligar o GitHub Pages a primeira vez é passo de pessoa.** O workflow pede
+  para criar o site sozinho (`enablement: true`) e, medido em 03/09/2026, o
+  token do Actions responde `Resource not accessible by integration`. Sem o
+  Pages ligado em Settings → Pages → Source: GitHub Actions, o job de
+  publicação fica **vermelho e não publica** — que é o comportamento certo:
+  falhar fechada, nunca liberar em silêncio.
+- **O branch padrão deste repositório nasceu errado.** O repositório foi
+  criado vazio, e o GitHub adota como padrão o primeiro branch que chega —
+  aqui, um branch de trabalho, não a `main`. A varredura de `instrucoes` lê o
+  branch padrão: enquanto ele não for a `main`, ela confere um branch que
+  pode ficar para trás e segue verde por não ter procurado. Confirmar em
+  Settings → General → Default branch que o padrão é `main`.
 
 ## 5. Idioma
 

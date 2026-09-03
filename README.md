@@ -57,8 +57,14 @@ sucesso, e o job ficaria verde do mesmo jeito.
 
 ## Publicação
 
-Todo push na `main` publica sozinho no GitHub Pages. Não existe passo
-manual de deploy.
+Todo push na `main` publica sozinho no GitHub Pages
+(`.github/workflows/pages.yml`). Não existe passo manual de deploy.
+
+**Uma única vez, na criação do repositório**, alguém precisa ligar o Pages em
+**Settings → Pages → Source: GitHub Actions**. O workflow tenta ligar sozinho
+(`enablement: true`), e medimos em 03/09/2026 que o token do Actions não tem
+permissão para criar o site: o job fica vermelho e nada é publicado. Vermelho
+aqui é o comportamento certo — ele não publicou.
 
 ## Estrutura
 
