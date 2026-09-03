@@ -1,0 +1,17 @@
+{
+  "name": "Rotina da Kelly",
+  "short_name": "Kelly",
+  "description": "Monte o dia, marque o que fez e veja o gatinho ficar feliz junto.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff4f8",
+  "theme_color": "#c2185b",
+  "lang": "pt-BR",
+  "categories": ["lifestyle", "productivity"],
+  "icons": [
+    { "src": "./assets/gatinho.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./assets/gatinho-mascara.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

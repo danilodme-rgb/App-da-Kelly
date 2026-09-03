@@ -1,0 +1,56 @@
+# Publicação automática: todo push na branch padrão vai ao ar sozinho.
+# Entregar é publicar, não commitar — não existe passo manual de deploy.
+#
+# As mesmas conferências do PR rodam aqui de novo, ANTES de publicar:
+# publicar arquivo quebrado é publicar com sucesso, e o job ficaria verde
+# do mesmo jeito com a tela em branco no ar.
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar as dependências
+        run: npm ci
+
+      - name: Bateria da lógica
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Conferência de fumaça do que vai ao ar
+        run: npm run fumaca
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - id: publicacao
+        uses: actions/deploy-pages@v4

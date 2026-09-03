@@ -1,0 +1,542 @@
+/* ---------------------------------------------------------------
+   Rotina da Kelly — paleta de gatinho, tema claro e escuro.
+
+   Toda cor sai de um token no `:root`. Cor definida só dentro de um
+   bloco de tema quebra o outro tema — o token nasce aqui e o bloco
+   `[data-tema="dark"]` só troca o valor.
+--------------------------------------------------------------- */
+
+:root {
+  --fundo: #fff4f8;
+  --fundo-2: #ffe6ef;
+  --superficie: #ffffff;
+  --superficie-2: #fff0f5;
+  --borda: #f3d3e0;
+  --texto: #3b2130;
+  --texto-fraco: #8a6b7b;
+  --destaque: #d6336c;
+  --destaque-forte: #a61e4d;
+  --destaque-fraco: #ffd6e5;
+  --sucesso: #2f9e6e;
+  --perigo: #c92a2a;
+  --pelo: #ffb8d1;
+  --pelo-borda: #d6336c;
+  --sombra: 0 8px 24px rgba(166, 30, 77, .10);
+  --raio: 18px;
+  --anel-vazio: #ffdcea;
+}
+
+[data-tema="dark"] {
+  --fundo: #1a1016;
+  --fundo-2: #241621;
+  --superficie: #251a22;
+  --superficie-2: #2f2029;
+  --borda: #3f2b36;
+  --texto: #f7e9f0;
+  --texto-fraco: #bb96a8;
+  --destaque: #ff8fb8;
+  --destaque-forte: #ffb3cd;
+  --destaque-fraco: #4a2333;
+  --sucesso: #5fd3a0;
+  --perigo: #ff8787;
+  --pelo: #6d3a51;
+  --pelo-borda: #ff8fb8;
+  --sombra: 0 8px 24px rgba(0, 0, 0, .45);
+  --anel-vazio: #402b36;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light dark; }
+
+body {
+  margin: 0;
+  padding: 0 16px calc(96px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(1100px 420px at 50% -180px, var(--fundo-2), transparent 70%),
+    var(--fundo);
+  color: var(--texto);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.janela-aberta {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
+.app { max-width: 560px; margin: 0 auto; }
+
+/* ------------------------- topo ------------------------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 4px 14px;
+}
+
+.marca { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.marca-selo {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--destaque-fraco);
+  color: var(--destaque);
+  flex: none;
+}
+.marca-selo svg { width: 26px; height: 26px; }
+
+.marca-texto { min-width: 0; }
+.marca-texto h1 {
+  margin: 0;
+  font-size: 19px;
+  letter-spacing: -.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.marca-texto p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--texto-fraco);
+}
+
+.btn-icone {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--borda);
+  border-radius: 13px;
+  background: var(--superficie);
+  color: var(--texto);
+  cursor: pointer;
+}
+.btn-icone svg { width: 20px; height: 20px; }
+.btn-icone:active { transform: scale(.95); }
+.ico-sol { display: none; }
+[data-tema="dark"] .ico-lua { display: none; }
+[data-tema="dark"] .ico-sol { display: block; }
+
+/* ------------------------- cartão e herói ------------------------- */
+
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+.gatinho { position: relative; width: 116px; height: 116px; flex: none; }
+.gatinho svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+
+.anel-fundo, .anel-frente {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+.anel-fundo { stroke: var(--anel-vazio); }
+.anel-frente {
+  stroke: var(--destaque);
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: 326.7;
+  transition: stroke-dashoffset .45s ease;
+}
+
+/* o desenho volta ao eixo: o SVG inteiro gira para o anel começar no topo */
+.cara { transform: rotate(90deg); transform-origin: 60px 60px; }
+.rosto { fill: var(--pelo); stroke: var(--pelo-borda); stroke-width: 2; }
+.orelha { fill: var(--pelo); stroke: var(--pelo-borda); stroke-width: 2; stroke-linejoin: round; }
+.olho { fill: var(--pelo-borda); }
+.olho-fechado {
+  fill: none;
+  stroke: var(--pelo-borda);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  display: none;
+}
+.focinho, .boca, .bigode {
+  fill: none;
+  stroke: var(--pelo-borda);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.bigode { opacity: .55; }
+
+/* dormindo: olhos viram tracinhos e a boca relaxa */
+[data-humor="sono"] .olho { display: none; }
+[data-humor="sono"] .olho-fechado { display: block; }
+[data-humor="sono"] .boca { d: path("M56 71.5q4 2 8 0"); }
+
+[data-humor="festa"] .rosto, [data-humor="festa"] .orelha { fill: var(--destaque-fraco); }
+[data-humor="festa"] .gatinho-pct { color: var(--sucesso); }
+[data-humor="festa"] svg { animation: pulinho 1.6s ease-in-out infinite; }
+
+@keyframes pulinho {
+  0%, 100% { transform: rotate(-90deg) translateX(0); }
+  50%      { transform: rotate(-90deg) translateX(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-humor="festa"] svg { animation: none; }
+  .anel-frente { transition: none; }
+}
+
+.gatinho-pct {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--destaque);
+}
+
+.hero-info { min-width: 0; flex: 1; }
+
+.saudacao {
+  margin: 0;
+  font-size: 18px;
+  cursor: pointer;
+}
+.saudacao::after {
+  content: " ✎";
+  font-size: 12px;
+  color: var(--texto-fraco);
+}
+
+#falaDoGato {
+  margin: 4px 0 12px;
+  font-size: 14px;
+  color: var(--texto-fraco);
+}
+
+.numeros { display: flex; gap: 8px; }
+.numero {
+  flex: 1;
+  min-width: 0;
+  background: var(--superficie-2);
+  border-radius: 12px;
+  padding: 8px 6px;
+  text-align: center;
+}
+.numero strong {
+  display: block;
+  font-size: 15px;
+  color: var(--destaque);
+  white-space: nowrap;
+}
+.numero span {
+  display: block;
+  font-size: 10.5px;
+  line-height: 1.25;
+  color: var(--texto-fraco);
+}
+
+/* ------------------------- tira da semana ------------------------- */
+
+.semana {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin: 14px 0;
+}
+.semana button {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 8px 0 6px;
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  background: var(--superficie);
+  color: var(--texto);
+  cursor: pointer;
+  font: inherit;
+}
+.semana .wd { font-size: 11px; color: var(--texto-fraco); }
+.semana .dn { font-size: 15px; font-weight: 700; }
+.semana .ponto {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: transparent;
+}
+.semana .tem-progresso .ponto { background: var(--destaque); }
+.semana .e-hoje { border-color: var(--destaque); }
+.semana .selecionado {
+  background: var(--destaque);
+  border-color: var(--destaque);
+  color: #fff;
+}
+.semana .selecionado .wd { color: rgba(255, 255, 255, .85); }
+.semana .selecionado .ponto { background: #fff; }
+
+/* ------------------------- filtros ------------------------- */
+
+.filtros { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.pilula {
+  border: 1px solid var(--borda);
+  background: var(--superficie);
+  color: var(--texto-fraco);
+  border-radius: 999px;
+  padding: 7px 15px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pilula.is-ativa {
+  background: var(--destaque);
+  border-color: var(--destaque);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ------------------------- lista ------------------------- */
+
+.lista { margin-top: 14px; display: grid; gap: 18px; }
+
+.grupo h3 {
+  margin: 0 0 8px 4px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--texto-fraco);
+}
+.grupo h3 small {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--destaque);
+  font-weight: 700;
+}
+
+.itens { display: grid; gap: 8px; }
+
+.tarefa {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  cursor: pointer;
+}
+.tarefa:active { transform: scale(.99); }
+
+.tarefa-emoji {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--superficie-2);
+  font-size: 19px;
+}
+.tarefa-corpo { flex: 1; min-width: 0; display: grid; }
+.tarefa-titulo { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tarefa-meta { font-size: 12px; color: var(--texto-fraco); }
+
+.tarefa-editar {
+  border: 0;
+  background: none;
+  color: var(--texto-fraco);
+  padding: 6px;
+  cursor: pointer;
+  flex: none;
+}
+.tarefa-editar svg { width: 17px; height: 17px; }
+
+.marca-feito {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--borda);
+  border-radius: 50%;
+  color: transparent;
+}
+.marca-feito svg { width: 15px; height: 15px; }
+
+.tarefa.feita { background: var(--superficie-2); border-color: var(--destaque-fraco); }
+.tarefa.feita .tarefa-titulo { text-decoration: line-through; color: var(--texto-fraco); }
+.tarefa.feita .marca-feito {
+  background: var(--sucesso);
+  border-color: var(--sucesso);
+  color: #fff;
+}
+
+.vazio {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  text-align: center;
+  padding: 34px 18px;
+  border: 1px dashed var(--borda);
+  border-radius: var(--raio);
+  color: var(--texto-fraco);
+  font-size: 14px;
+}
+.vazio strong { color: var(--texto); font-size: 15px; }
+
+/* ------------------------- notas e rodapé ------------------------- */
+
+.notas { margin-top: 18px; padding: 14px; display: grid; gap: 8px; }
+.notas label { font-size: 13px; color: var(--texto-fraco); }
+.notas textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: var(--superficie-2);
+  color: var(--texto);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.rodape {
+  margin-top: 18px;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+}
+.rodape-nota { font-size: 12px; color: var(--texto-fraco); }
+
+.btn {
+  border-radius: 12px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn.principal { background: var(--destaque); color: #fff; font-weight: 600; }
+.btn.fantasma { background: transparent; border-color: var(--borda); color: var(--texto-fraco); }
+.btn.perigo { background: transparent; border-color: var(--perigo); color: var(--perigo); }
+
+.flutuante {
+  position: fixed;
+  right: max(18px, calc(50vw - 262px));
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  width: 58px;
+  height: 58px;
+  border: 0;
+  border-radius: 20px;
+  background: var(--destaque);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 24px rgba(214, 51, 108, .38);
+  cursor: pointer;
+}
+.flutuante svg { width: 26px; height: 26px; }
+.flutuante:active { transform: scale(.94); }
+
+/* ------------------------- janela ------------------------- */
+
+.janela {
+  border: 0;
+  border-radius: 22px 22px 0 0;
+  padding: 0;
+  width: 100%;
+  max-width: 560px;
+  margin: auto auto 0;
+  background: var(--superficie);
+  color: var(--texto);
+}
+.janela::backdrop { background: rgba(59, 33, 48, .5); }
+.janela form { padding: 18px 18px calc(18px + env(safe-area-inset-bottom)); display: grid; gap: 10px; }
+.janela h3 { margin: 0 0 4px; font-size: 17px; }
+.janela label, .janela legend { font-size: 13px; color: var(--texto-fraco); }
+.janela input[type="text"],
+.janela input[type="time"],
+.janela select,
+.janela textarea {
+  width: 100%;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: var(--superficie-2);
+  color: var(--texto);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 15px;
+}
+
+.linha { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.escolha-icone {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 6px;
+}
+.escolha-icone button {
+  aspect-ratio: 1;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: var(--superficie-2);
+  font-size: 19px;
+  cursor: pointer;
+}
+.escolha-icone button.is-ativa { border-color: var(--destaque); background: var(--destaque-fraco); }
+
+.dias { border: 0; padding: 0; margin: 0; display: grid; gap: 6px; }
+.escolha-dias { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.escolha-dias button {
+  padding: 9px 0;
+  border: 1px solid var(--borda);
+  border-radius: 11px;
+  background: var(--superficie-2);
+  color: var(--texto-fraco);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.escolha-dias button.is-ativa {
+  background: var(--destaque);
+  border-color: var(--destaque);
+  color: #fff;
+}
+
+.janela-acoes { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.espaco { flex: 1; }
+
+/* ------------------------- aviso ------------------------- */
+
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translate(-50%, 26px);
+  background: var(--texto);
+  color: var(--superficie);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  z-index: 10;
+  max-width: 90vw;
+  text-align: center;
+}
+.aviso.aparece { opacity: 1; transform: translate(-50%, 0); }

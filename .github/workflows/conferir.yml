@@ -1,0 +1,53 @@
+# A trava roda no PR, não só depois do merge: vermelho depois do merge é
+# notícia, não trava. Aqui roda nos dois, e em qualquer branch.
+name: Conferir
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar as dependências
+        run: npm ci
+
+      - name: Bateria da lógica
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Conferência de fumaça do que iria ao ar
+        run: npm run fumaca
+
+      - name: Provar a conferência por sabotagem
+        run: npm run sabotagem
+
+      # O runner do GitHub já vem com o Google Chrome instalado; é ele que
+      # abre o app aqui. Sem navegador, o passo BLOQUEIA em vez de liberar
+      # calado — conferência que só roda onde ela funciona não foi feita.
+      - name: Abrir o app num navegador de verdade
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: npm run tela
+
+      - name: Guardar os prints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas
+          path: capturas/
+          if-no-files-found: ignore

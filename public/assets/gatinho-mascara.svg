@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Gatinho da Kelly">
+  <title>Gatinho da Kelly</title>
+  <!-- Ícone mascarável: o desenho fica dentro do círculo seguro (80% do
+       lado), porque o Android recorta as bordas em formatos variados. -->
+  <rect width="512" height="512" fill="#ffd6e5"/>
+  <g transform="translate(256 262) scale(.72) translate(-256 -288)">
+    <g fill="#ffffff" stroke="#d6336c" stroke-width="16" stroke-linejoin="round">
+      <path d="M140 210 148 108l86 50z"/>
+      <path d="M372 210 364 108l-86 50z"/>
+      <circle cx="256" cy="288" r="132"/>
+    </g>
+    <g fill="#d6336c">
+      <ellipse cx="212" cy="272" rx="16" ry="22"/>
+      <ellipse cx="300" cy="272" rx="16" ry="22"/>
+    </g>
+    <g fill="none" stroke="#d6336c" stroke-width="13" stroke-linecap="round">
+      <path d="M256 312v16"/>
+      <path d="M234 330q22 20 44 0"/>
+    </g>
+  </g>
+</svg>

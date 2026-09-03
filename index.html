@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#c2185b">
+<meta name="description" content="Rotina da Kelly — monte o dia, marque o que fez e veja o gatinho ficar feliz junto.">
+<title>Rotina da Kelly</title>
+<link rel="manifest" href="%BASE_URL%manifest.webmanifest">
+<link rel="icon" href="%BASE_URL%assets/gatinho.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="%BASE_URL%assets/gatinho.svg">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="marca">
+      <span class="marca-selo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10.5 5 4l4.2 3.1a9.6 9.6 0 0 1 5.6 0L19 4l1 6.5"/>
+          <path d="M20 12.4c0 4.7-3.6 7.6-8 7.6s-8-2.9-8-7.6"/>
+          <path d="M9.4 12.4h.01M14.6 12.4h.01"/>
+          <path d="M12 15.1v1.1M12 16.2c-.7 0-1.2-.4-1.4-.9M12 16.2c.7 0 1.2-.4 1.4-.9"/>
+        </svg>
+      </span>
+      <div class="marca-texto">
+        <h1>Rotina da Kelly</h1>
+        <p id="rotuloDia">—</p>
+      </div>
+    </div>
+    <button id="alternarTema" class="btn-icone" type="button" title="Alternar tema" aria-label="Alternar entre tema claro e escuro">
+      <svg class="ico-lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="ico-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <section class="hero cartao">
+    <div class="gatinho" id="gatinho" data-humor="sono" aria-hidden="true">
+      <svg viewBox="0 0 120 120">
+        <circle class="anel-fundo" cx="60" cy="60" r="52"/>
+        <circle class="anel-frente" id="anelProgresso" cx="60" cy="60" r="52"/>
+        <g class="cara">
+          <path class="orelha" d="M32 44 34 24l17 10z"/>
+          <path class="orelha" d="M88 44 86 24l-17 10z"/>
+          <circle class="rosto" cx="60" cy="63" r="27"/>
+          <g class="olhos">
+            <ellipse class="olho" cx="51" cy="59" rx="3.2" ry="4.4"/>
+            <ellipse class="olho" cx="69" cy="59" rx="3.2" ry="4.4"/>
+            <path class="olho-fechado" d="M47.5 59q3.5 3.5 7 0M65.5 59q3.5 3.5 7 0"/>
+          </g>
+          <path class="focinho" d="M60 68v3.5"/>
+          <path class="boca" d="M55.5 71.5q4.5 4 9 0"/>
+          <path class="bigode" d="M40 63h-9M40 67.5l-8.5 3M80 63h9M80 67.5l8.5 3"/>
+        </g>
+      </svg>
+      <span class="gatinho-pct" id="pctProgresso">0%</span>
+    </div>
+    <div class="hero-info">
+      <h2 id="saudacao" class="saudacao" title="Toque para trocar o nome">Olá!</h2>
+      <p id="falaDoGato">—</p>
+      <div class="numeros">
+        <div class="numero">
+          <strong id="numSequencia">0</strong>
+          <span>dias seguidos</span>
+        </div>
+        <div class="numero">
+          <strong id="numFeitas">0 de 0</strong>
+          <span>feitas hoje</span>
+        </div>
+        <div class="numero">
+          <strong id="numSemana">0%</strong>
+          <span>na semana</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="semana" id="tiraSemana" aria-label="Dias da semana"></nav>
+
+  <section class="filtros" role="tablist" aria-label="Filtrar por período">
+    <button class="pilula is-ativa" data-filtro="todos" role="tab" type="button">Tudo</button>
+    <button class="pilula" data-filtro="manha" role="tab" type="button">Manhã</button>
+    <button class="pilula" data-filtro="tarde" role="tab" type="button">Tarde</button>
+    <button class="pilula" data-filtro="noite" role="tab" type="button">Noite</button>
+  </section>
+
+  <main id="lista" class="lista" aria-live="polite"></main>
+
+  <section class="cartao notas">
+    <label for="caixaNota">Diário do dia</label>
+    <textarea id="caixaNota" rows="3" placeholder="Como foi o dia? O que o gatinho aprontou?"></textarea>
+  </section>
+
+  <footer class="rodape">
+    <button id="limparDia" class="btn fantasma" type="button">Limpar marcações do dia</button>
+    <span class="rodape-nota">Tudo fica salvo só neste aparelho. 🐾</span>
+  </footer>
+
+  <button id="novaTarefa" class="flutuante" type="button" aria-label="Nova tarefa">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  </button>
+</div>
+
+<dialog id="janelaTarefa" class="janela">
+  <form id="formTarefa" method="dialog">
+    <h3 id="tituloJanela">Nova tarefa</h3>
+
+    <label for="fTitulo">Tarefa</label>
+    <input id="fTitulo" name="titulo" type="text" maxlength="80" required placeholder="Ex.: escovar o gatinho">
+
+    <div class="linha">
+      <div>
+        <label for="fPeriodo">Período</label>
+        <select id="fPeriodo" name="periodo">
+          <option value="manha">Manhã</option>
+          <option value="tarde">Tarde</option>
+          <option value="noite">Noite</option>
+        </select>
+      </div>
+      <div>
+        <label for="fHora">Horário</label>
+        <input id="fHora" name="hora" type="time">
+      </div>
+    </div>
+
+    <label for="escolhaIcone">Ícone</label>
+    <div class="escolha-icone" id="escolhaIcone"></div>
+    <input type="hidden" id="fIcone" name="icone" value="🐾">
+
+    <fieldset class="dias">
+      <legend>Repetir nos dias</legend>
+      <div id="escolhaDias" class="escolha-dias"></div>
+    </fieldset>
+
+    <div class="janela-acoes">
+      <button type="button" id="excluirTarefa" class="btn perigo" hidden>Excluir</button>
+      <span class="espaco"></span>
+      <button type="button" id="cancelarTarefa" class="btn fantasma">Cancelar</button>
+      <button type="submit" class="btn principal">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

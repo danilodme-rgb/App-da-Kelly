@@ -1,0 +1,22 @@
+{
+  "name": "app-da-kelly",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rotina da Kelly — PWA de rotina diária com tema de gatinho.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "fumaca": "node scripts/conferir-fumaca.mjs",
+    "sabotagem": "node scripts/sabotar-fumaca.mjs",
+    "conferir": "npm run test && npm run build && npm run fumaca && npm run sabotagem",
+    "tela": "node scripts/tela.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.62.1",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.5"
+  }
+}

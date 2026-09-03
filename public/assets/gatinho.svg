@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Gatinho da Kelly">
+  <title>Gatinho da Kelly</title>
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe0ec"/>
+      <stop offset="1" stop-color="#ffc2da"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#fundo)"/>
+  <g fill="#ffffff" stroke="#d6336c" stroke-width="14" stroke-linejoin="round">
+    <path d="M140 210 148 108l86 50z"/>
+    <path d="M372 210 364 108l-86 50z"/>
+    <circle cx="256" cy="288" r="132" stroke-width="14"/>
+  </g>
+  <g fill="#d6336c">
+    <ellipse cx="212" cy="272" rx="15" ry="21"/>
+    <ellipse cx="300" cy="272" rx="15" ry="21"/>
+  </g>
+  <g fill="none" stroke="#d6336c" stroke-width="12" stroke-linecap="round">
+    <path d="M256 312v16"/>
+    <path d="M234 330q22 20 44 0"/>
+    <path d="M124 286h-46M126 316l-44 16M388 286h46M386 316l44 16" opacity=".6"/>
+  </g>
+  <path d="M186 174c-14-10-14-30 2-36 10-4 20 1 24 9 4-8 14-13 24-9 16 6 16 26 2 36-9 7-18 12-26 18-8-6-17-11-26-18z" fill="#d6336c" opacity=".55"/>
+</svg>
