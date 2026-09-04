@@ -77,6 +77,8 @@ autoteste não alcança — e é justamente aí que ela vira "deve funcionar". R
 parâmetro, o caminho inteiro (ler a base, cair para o modo estrito quando a base não vem) se prova
 offline, em segundos, em qualquer máquina.
 
+**Deploy verde não prova que o endereço responde — e a sessão que publica pode não conseguir abrir o que publicou.** Medido em 03/09/2026: a política de rede da sessão recusava `danilodme-rgb.github.io` no CONNECT (403 do proxy), então "publicou" e "o endereço responde" eram duas afirmações, e só a primeira estava ao alcance de quem rodou o deploy. O agravante é o formato da recusa: `curl` barrado pelo proxy chega como "não veio nada", **indistinguível** de um 404 para quem olha só o corpo da resposta — e daí sai laudo sobre o produto a partir de bloqueio de rede. Conferência que sai pela rede mede o código, não o corpo: `curl -sS -o /dev/null -w '%{http_code}' --connect-timeout 10` separa 404 de 403-do-proxy de conexão recusada, e o que não chegou a ser medido sai dito como não medido, nunca como reprovado (regra 10b).
+
 ## Git
 
 **Merge por squash quebra o teste de ancestralidade.** O commit da branch **nunca** vira ancestral,
@@ -92,6 +94,8 @@ credenciais da máquina é consultado primeiro e responde com a conta errada. A 
 **`git diff --no-index` vaza caminho absoluto no cabeçalho.** Em runner, a pasta temporária muda a
 cada execução e faz dois relatórios idênticos parecerem diferentes. Cortar tudo antes do primeiro
 `@@`.
+
+**Repositório recém-criado adota como padrão o primeiro branch que chega.** Medido em 03/09/2026: o repositório foi criado sem nenhum commit, a API respondia `default_branch: main`, e essa `main` não existia. O primeiro push foi num branch de trabalho, e o GitHub **o** promoveu a padrão — a API passou a devolver o nome do branch de trabalho, com a mesma cara de resposta normal. Toda trava que lê o branch **padrão** (varredura de cópia, comparação com a fonte, deploy) passou a conferir o branch errado, e ficaria verde para sempre enquanto a `main` andasse sozinha: verde por não ter procurado, e sem sinal nenhum (regra 8c). Em repositório vazio o `default_branch` é promessa, não fato — conferir **depois** do primeiro push, nunca antes, e empurrar de propósito o branch que se quer como padrão antes de qualquer outro.
 
 ## Node e Windows
 
@@ -153,6 +157,8 @@ projeto que gera PDF a partir de `.md`.
 **Número escrito à mão em vários lugares diverge sozinho.** Num caso medido, **seis de quatorze**
 contagens anunciadas estavam erradas — todas verdes. Ou existe algo que confere os números entre
 si, ou não se escreve o número em mais de um lugar.
+
+**Troca textual de marcador acerta a primeira ocorrência — e a primeira costuma ser o comentário que explica a troca.** Medido em 03/09/2026, no primeiro build de um projeto: o molde do `sw.js` escrevia `__BUILD__` por extenso num comentário **antes** de usá-lo no código, e o `String.replace` com texto, que troca só a primeira, carimbou o comentário. O arquivo publicado saiu com o marcador intacto no código — a versão do cache virou a palavra `__BUILD__`, igual para sempre, e o app já instalado nunca mais se atualizaria (regra 11f) — sem erro nenhum, porque o build de fato trocou alguma coisa. O conserto tem duas metades, e as duas fazem falta: trocar **todas** as ocorrências (`replaceAll`, ou `/g`), e o comentário **não escrever o marcador por extenso**. Vale para qualquer substituição de marcador em molde, não só em service worker.
 
 ---
 
