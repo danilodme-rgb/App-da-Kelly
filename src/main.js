@@ -346,6 +346,11 @@ $('#excluirTarefa').addEventListener('click', () => {
 
 /* ------------------------- início ------------------------- */
 
+/* Carimbo do build, trocado por `vite.config.js`. Serve para conferir a
+   olho, no celular, que a versão nova chegou: é a única evidência
+   visível do ciclo da regra 11f num aparelho de verdade. */
+$('#versaoDoApp').textContent = `versão de ${__VERSAO_DO_APP__}`;
+
 aplicarTema();
 montarEscolhas();
 desenharTudo();

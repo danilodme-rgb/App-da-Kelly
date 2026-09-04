@@ -15,8 +15,9 @@
      4. o service worker está pronto: sem marcador de molde sobrando,
         e cada arquivo da lista de cache existe
      5. o manifesto parseia e os ícones dele existem
-     6. o `index.html` carrega o app (script de módulo) e não ficou
-        apontando para o código-fonte
+     6. o `index.html` carrega o app (script de módulo), não ficou
+        apontando para o código-fonte, e o carimbo de versão foi trocado
+        pelo build
 
    O que ela NÃO cobre, escrito de propósito: não abre navegador, não
    confere aparência, não roda o app. Isso é o Chromium e a bateria de
@@ -196,6 +197,19 @@ if (html && !/<script[^>]+type="module"[^>]+src=/.test(html)) {
 conferidos++;
 if (/src="\/src\//.test(html)) {
   reclamar('index.html publicado ainda aponta para /src/ — isso é o código-fonte, que não vai para o ar.');
+}
+
+/* O carimbo de versão é a única evidência visível, no celular, de que a
+   versão nova chegou. Se o marcador for ao ar sem troca, o rodapé mostra
+   o nome do marcador e a conferência à mão do ciclo de atualização passa
+   a medir nada. O nome é montado em pedaços de propósito, para este
+   arquivo não casar consigo mesmo. */
+const MARCADOR_DE_VERSAO = '__VERSAO' + '_DO_APP__';
+for (const arquivo of arquivos.filter((a) => a.endsWith('.js') || a.endsWith('.html'))) {
+  conferidos++;
+  if (readFileSync(join(PASTA, arquivo), 'utf8').includes(MARCADOR_DE_VERSAO)) {
+    reclamar(`${arquivo} foi publicado com o marcador de versão sem trocar — o rodapé mostraria o marcador no lugar da data.`);
+  }
 }
 
 /* ------------------------- veredito ------------------------- */

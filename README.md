@@ -19,6 +19,7 @@ seu aparelho.
   da semana
 - Criar, editar e excluir tarefas com **ícone, horário e dias de repetição**
 - **Diário do dia**
+- Versão do build no rodapé, para dar para ver a olho que a atualização chegou
 - Saudação com o nome — toque em "Boa tarde, Kelly!" para trocar
 - **Tema claro e escuro**, seguindo o sistema, com botão para alternar
 - Funciona **offline** e pode ser instalado como app (PWA)
@@ -45,7 +46,7 @@ npm run tela       # abre o app num Chromium e tira print dos dois temas
 | `npm test` | a lógica da rotina — 38 casos, e a bateria reprova se algum deixar de rodar |
 | `npm run build` | o build roda |
 | `npm run fumaca` | o que iria ao ar não está quebrado: arquivo citado que não existe, JavaScript com erro de sintaxe, service worker sem versão carimbada, manifesto quebrado |
-| `npm run sabotagem` | que a conferência acima **detecta** falha: quebra o `dist` de propósito 12 vezes e exige reprovação, com o motivo certo, em todas |
+| `npm run sabotagem` | que a conferência acima **detecta** falha: quebra o `dist` de propósito 13 vezes e exige reprovação, com o motivo certo, em todas |
 | `npm run tela` | o app abre nos dois temas, sem erro no console, e marcar tarefa mexe no progresso |
 | `npm run atualizacao` | que quem já instalou o app **recebe a versão nova sozinho** — sem reinstalar, sem limpar cache, sem apertar nada — e que o app ainda abre sem internet |
 | `npm run sabotagem-atualizacao` | que a conferência acima detecta falha: desliga cada peça da atualização automática, uma por vez, e exige reprovação nas cinco |

@@ -278,7 +278,7 @@ service worker se atualizar: ela tem de voltar da rede, não do cache.
 | `npm test` | a lógica da rotina (38 casos, com contagem de casos executados) | PR, push e publicação |
 | `npm run build` | o build roda | PR, push e publicação |
 | `npm run fumaca` | o que iria ao ar não está quebrado (6 famílias) | PR, push e publicação |
-| `npm run sabotagem` | a conferência de fumaça **detecta** falha, em 12 sabotagens | PR e push |
+| `npm run sabotagem` | a conferência de fumaça **detecta** falha, em 13 sabotagens | PR e push |
 | `npm run tela` | o app abre nos dois temas, num Chromium de verdade, sem erro no console | PR e push |
 | `npm run atualizacao` | o app instalado recebe a versão nova **sozinho**, e ainda abre offline (6 casos) | PR e push |
 | `npm run sabotagem-atualizacao` | essa conferência **detecta** falha, em 5 sabotagens da regra 11f | PR e push |
@@ -295,7 +295,12 @@ service worker se atualizar: ela tem de voltar da rede, não do cache.
   atravessa um cache que não existe ali. Quem prova aquele pedaço é o próprio
   GitHub Pages, e só na primeira visita depois de publicar.
 - **Instalar como app não é conferido**: tela de início, ícone e janela sem
-  barra de endereço são aparelho de verdade.
+  barra de endereço são aparelho de verdade. O rodapé mostra a versão do
+  build (`versão de DD/MM, HHhMM`, saída da data do último commit) justamente
+  para essa conferência à mão ser um relance: instala, publica, e a linha
+  tem de mudar sozinha. A conferência de fumaça reprova se o marcador for ao
+  ar sem troca — rodapé mostrando o nome do marcador faria o teste manual
+  medir nada.
 - **A publicação em si não é conferida por aqui**: o workflow diz que
   publicou; quem prova que o endereço responde é abrir o endereço. ⚠ E a
   sessão de nuvem **não consegue** abri-lo: medido em 03/09/2026, a política

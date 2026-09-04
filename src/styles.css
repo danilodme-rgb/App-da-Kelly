@@ -421,6 +421,7 @@ body.janela-aberta {
   text-align: center;
 }
 .rodape-nota { font-size: 12px; color: var(--texto-fraco); }
+.rodape-versao { font-size: 11px; color: var(--texto-fraco); opacity: .7; }
 
 .btn {
   border-radius: 12px;

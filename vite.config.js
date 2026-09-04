@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vite';
@@ -7,6 +8,25 @@ import { defineConfig } from 'vite';
 // sem ela, o app publicado procura os arquivos na raiz do domínio e abre
 // em branco. Fora do Pages (dev, preview, teste local) a base é a raiz.
 const BASE = process.env.BASE_URL ?? '/App-da-Kelly/';
+
+/* A versão que aparece no rodapé do app. Sai da data do último commit,
+   não do relógio do build: assim dois builds do mesmo código dão a mesma
+   resposta, e o nome do cache do service worker continua trocando só
+   quando o app mudou de verdade. Sem git por perto (uma cópia da árvore,
+   um tarball), cai no relógio — e aí a data é a do build mesmo.
+
+   Fuso de São Paulo, sempre: o runner do GitHub roda em UTC, e sem dizer
+   o fuso o app mostraria para a Kelly uma hora que não é a dela. */
+function versaoDoApp() {
+  const r = spawnSync('git', ['log', '-1', '--format=%cI'], { encoding: 'utf8' });
+  const quando = r.status === 0 && r.stdout.trim() ? new Date(r.stdout.trim()) : new Date();
+  const partes = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(quando);
+  const p = Object.fromEntries(partes.map((x) => [x.type, x.value]));
+  return `${p.day}/${p.month}, ${p.hour}h${p.minute}`;
+}
 
 /* O service worker precisa saber o nome real dos arquivos, e com build
    eles ganham hash a cada versão. Escrever a lista à mão seria uma lista
@@ -43,6 +63,9 @@ function servicoWorker() {
 
 export default defineConfig({
   base: BASE,
+  define: {
+    __VERSAO_DO_APP__: JSON.stringify(versaoDoApp()),
+  },
   plugins: [servicoWorker()],
   build: {
     target: 'es2020',

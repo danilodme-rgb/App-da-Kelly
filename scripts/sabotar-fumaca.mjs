@@ -22,7 +22,7 @@ import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync, r
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 
-const CASOS_ESPERADOS = 13;
+const CASOS_ESPERADOS = 14;
 let casos = 0;
 const falhas = [];
 
@@ -151,6 +151,13 @@ sabotagem('ícone do manifesto aponta para arquivo que não existe',
 sabotagem('página publicada sem o script do app',
   (p) => troca(join(p, 'index.html'), /<script[^>]*type="module"[^>]*><\/script>/, ''),
   'não carrega nenhum script de módulo');
+
+sabotagem('carimbo de versão publicado sem troca',
+  (p) => {
+    const [js] = arquivoQueCasa(p, '.js');
+    troca(js, /versão de [^"'`]*/, '__VERSAO' + '_DO_APP__');
+  },
+  'marcador de versão sem trocar');
 
 sabotagem('página publicada apontando para o código-fonte',
   (p) => troca(join(p, 'index.html'), /<script type="module"[^>]*src="[^"]*"/, '<script type="module" src="/src/main.js"'),
