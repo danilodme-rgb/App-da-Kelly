@@ -320,31 +320,53 @@ service worker se atualizar: ela tem de voltar da rede, não do cache.
   pode ficar para trás e segue verde por não ter procurado. Confirmar em
   Settings → General → Default branch que o padrão é `main`.
 
-## 5. Idioma
+## 5. O CI não pode ser lento sem motivo
+
+`npm ci` demorava **7 minutos** em toda execução — na nuvem e nos runners
+do GitHub, com o cache de dependências já quente. Medido em 04/09/2026, na
+mesma máquina e no mesmo minuto: `npm ci` levou 7m00,9s com **1,9 s de
+CPU** — quase tudo espera de rede — e `npm ci --no-audit`, 1,5 s. O
+culpado é a auditoria de segurança que o `npm ci` dispara sozinha no fim.
+
+Está desligada em `.npmrc`, versionado, e não em flag repetida nos dois
+workflows: ajuste que só existe na máquina de alguém não viaja.
+
+⚠ **Isso desligou um sinal, não uma trava**: a auditoria do `npm ci`
+imprime um aviso e nunca reprova o build, então não havia cobertura a
+perder. Querendo auditoria de verdade, ela entra como passo próprio que
+**reprova** — nunca como efeito colateral que ninguém lê.
+
+O diagnóstico que serve para o próximo passo lento: comparar `real` com
+`user`. Passo que não imprime nada e não gasta CPU não está trabalhando,
+está esperando — e aí a pergunta é *esperando o quê*, não *como deixar a
+máquina mais rápida*.
+
+## 6. Idioma
 
 Interface, mensagens, comentários de código, commits e nomes de variáveis em
 **português do Brasil**. O app é entregue a uma usuária final: os textos
 falam a língua dela. Sem `text-transform: capitalize` em data — ele entrega
 "Quinta-Feira, 03 De Setembro"; a primeira letra sobe no JavaScript.
 
-## 6. Os dados são da usuária
+## 7. Os dados são da usuária
 
 Tudo em `localStorage`, no aparelho. Nada de servidor, telemetria, analytics
 ou envio para terceiros. Ao mudar o formato do estado, manter a leitura
 tolerante a dado antigo: `carregar()` valida campo a campo e cai no padrão
 quando falta — o que volta do armazenamento não é o que foi gravado.
 
-## 7. Identidade visual
+## 8. Identidade visual
 
 Paleta rosé com tema claro e escuro completos. **Toda cor sai de um token no
 `:root`**; cor definida só dentro do bloco de um tema quebra o outro. O
 gatinho é desenhado em SVG no próprio código — nada de imagem de terceiros
 versionada.
 
-## 8. Arquitetura
+## 9. Arquitetura
 
 ```
 index.html                    a casca; aponta para o código-fonte
+.npmrc                        desliga a auditoria que travava o CI por 7 min
 src/main.js                   tela e eventos (tudo que encosta em DOM)
 src/estado.js                 regra e estado — sem DOM, é o que a bateria testa
 src/styles.css                paleta de gatinho, tema claro e escuro
@@ -362,7 +384,7 @@ A divisão entre `estado.js` e `main.js` é o que deixa a regra ser testada
 sem navegador. Regra nova entra em `estado.js` com caso na bateria; se ela
 só existe dentro de um `addEventListener`, ninguém a testa.
 
-## 9. Fluxo de git
+## 10. Fluxo de git
 
 - Desenvolver em branch, abrir PR para a `main`, e deixar o merge para o
   dono do repositório.

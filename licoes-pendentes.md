@@ -55,3 +55,16 @@ estado normal, não falha. O que ela impede é a lição sumir sem ninguém ver.
   resultado final, medir só o resultado não distingue qual delas está viva — a sabotagem
   precisa ser observada no ponto em que aquela invariante age, e uma sabotagem que passa é
   sinal de que o ponto de medição está errado, não de que o defeito é inofensivo.*
+
+- [ ] **Passo lento que não imprime nada e não gasta CPU está esperando, não trabalhando.** O
+  `npm ci` deste projeto levava 7 minutos em toda execução, na nuvem e no runner, com o cache
+  já quente — e eu quase "resolvi" isso mexendo no cache, que era a hipótese óbvia e estava
+  errada: o log dizia `Cache hit occurred on the primary key`. O que decidiu foi comparar
+  `real` com `user`: 7m00,9s de relógio contra **1,9 s de CPU**. Instalar 59 MB em 2338
+  arquivos leva segundos; o resto era a auditoria de segurança que o `npm ci` dispara sozinha
+  no fim, pendurada na rede. `--no-audit`: 1,5 s. Medido em 04/09/2026. Um segundo sinal
+  apontava para o mesmo lugar e eu quase o ignorei: dois jobs, em runners diferentes,
+  terminaram o passo **no mesmo segundo** — máquinas independentes descompactando arquivos não
+  sincronizam assim. A generalização que ainda não é regra: *antes de otimizar um passo lento,
+  medir se ele é CPU ou espera; e desconfiar de qualquer explicação que não justifique a
+  sincronia entre execuções independentes.*
