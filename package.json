@@ -11,8 +11,10 @@
     "test": "vitest run",
     "fumaca": "node scripts/conferir-fumaca.mjs",
     "sabotagem": "node scripts/sabotar-fumaca.mjs",
-    "conferir": "npm run test && npm run build && npm run fumaca && npm run sabotagem",
-    "tela": "node scripts/tela.mjs"
+    "conferir": "npm run test && npm run build && npm run fumaca && npm run sabotagem && npm run atualizacao && npm run sabotagem-atualizacao",
+    "tela": "node scripts/tela.mjs",
+    "atualizacao": "node scripts/conferir-atualizacao.mjs",
+    "sabotagem-atualizacao": "node scripts/sabotar-atualizacao.mjs"
   },
   "devDependencies": {
     "playwright-core": "^1.62.1",

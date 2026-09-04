@@ -254,9 +254,20 @@ apertar nada. O que sustenta isso, e não pode regredir:
   ignorando a primeira tomada de controle, que é a instalação e não uma
   atualização.
 
-Mexeu em cache, service worker ou workflow: testar o ciclo inteiro —
-instalar a versão 1, publicar a versão 2, confirmar que a tela mudou
-sozinha, e confirmar que o app **ainda abre offline**.
+Isso tem trava desde 04/09/2026: `npm run atualizacao` constrói duas
+versões de verdade, serve a primeira, deixa o service worker assumir,
+publica a segunda e exige que a tela troque **sozinha** — e depois corta a
+rede e exige que o app ainda abra. `npm run sabotagem-atualizacao` desliga
+cada uma das cinco invariantes acima, uma por vez, e exige que a
+conferência reprove nas cinco.
+
+⚠ **"Rede primeiro" se mede no COMEÇO do ciclo, não no fim.** Como o nome
+do cache sai do conteúdo do build, o service worker novo abre um cache
+vazio e busca tudo da rede — então, olhando só o fim, até um cache-first
+acaba entregando a versão nova, e a sabotagem passa batida. Foi o que
+aconteceu na primeira versão desta trava. O que prova a invariante é uma
+busca comum feita pela página logo depois de publicar, **antes** de o
+service worker se atualizar: ela tem de voltar da rede, não do cache.
 
 ## 4. As travas deste projeto, e o que elas não cobrem
 
@@ -267,7 +278,9 @@ sozinha, e confirmar que o app **ainda abre offline**.
 | `npm run fumaca` | o que iria ao ar não está quebrado (6 famílias) | PR, push e publicação |
 | `npm run sabotagem` | a conferência de fumaça **detecta** falha, em 12 sabotagens | PR e push |
 | `npm run tela` | o app abre nos dois temas, num Chromium de verdade, sem erro no console | PR e push |
-| `npm run conferir` | tudo acima menos o navegador | à mão, antes de empurrar |
+| `npm run atualizacao` | o app instalado recebe a versão nova **sozinho**, e ainda abre offline (6 casos) | PR e push |
+| `npm run sabotagem-atualizacao` | essa conferência **detecta** falha, em 5 sabotagens da regra 11f | PR e push |
+| `npm run conferir` | tudo acima menos o `tela` | à mão, antes de empurrar |
 
 **Buracos declarados**, para não virarem buraco calado:
 
@@ -275,9 +288,12 @@ sozinha, e confirmar que o app **ainda abre offline**.
   abre, que o tema pedido é o tema aplicado, que marcar tarefa mexe no
   progresso e que o console fica limpo — não que ficou bonito. Print e olho
   humano continuam sendo o método.
-- **O ciclo de atualização do app instalado não é testado automaticamente.**
-  Instalar a versão 1, publicar a 2 e ver a tela trocar sozinha é conferência
-  à mão. Teste de função pura passa verde com essa lógica errada.
+- **O cache HTTP da hospedagem não é exercido.** O servidor do teste não manda
+  `Cache-Control: max-age`, então o `cache: 'no-store'` do service worker
+  atravessa um cache que não existe ali. Quem prova aquele pedaço é o próprio
+  GitHub Pages, e só na primeira visita depois de publicar.
+- **Instalar como app não é conferido**: tela de início, ícone e janela sem
+  barra de endereço são aparelho de verdade.
 - **A publicação em si não é conferida por aqui**: o workflow diz que
   publicou; quem prova que o endereço responde é abrir o endereço. ⚠ E a
   sessão de nuvem **não consegue** abri-lo: medido em 03/09/2026, a política

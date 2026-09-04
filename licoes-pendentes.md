@@ -43,3 +43,15 @@ estado normal, não falha. O que ela impede é a lição sumir sem ninguém ver.
   para quem só olha "não veio nada". A generalização que ainda não é regra: *quando a
   conferência sai pela rede, distinguir "reprovou" de "não consegui chegar lá" faz parte da
   conferência — sem isso, bloqueio de rede vira laudo sobre o produto.*
+
+- [ ] **Sabotagem tem de desligar a invariante no ponto onde ela age.** A trava do ciclo de
+  atualização (`conferir-atualizacao.mjs`) nasceu medindo só o fim do ciclo: publiquei a
+  versão 2 e exigi que a tela trocasse. Passou nas cinco sabotagens? Não: `cache-primeiro`
+  passou **batida**. Motivo, medido em 04/09/2026: como o nome do cache sai do conteúdo do
+  build, o service worker novo abre um cache vazio e busca tudo da rede — outra invariante
+  compensou a que eu tinha desligado, e o resultado final ficou igual. A conferência só
+  passou a pegar depois de medir uma busca comum **antes** da atualização do service worker.
+  A generalização que ainda não é regra: *quando várias invariantes produzem o mesmo
+  resultado final, medir só o resultado não distingue qual delas está viva — a sabotagem
+  precisa ser observada no ponto em que aquela invariante age, e uma sabotagem que passa é
+  sinal de que o ponto de medição está errado, não de que o defeito é inofensivo.*

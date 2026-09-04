@@ -47,6 +47,8 @@ npm run tela       # abre o app num Chromium e tira print dos dois temas
 | `npm run fumaca` | o que iria ao ar não está quebrado: arquivo citado que não existe, JavaScript com erro de sintaxe, service worker sem versão carimbada, manifesto quebrado |
 | `npm run sabotagem` | que a conferência acima **detecta** falha: quebra o `dist` de propósito 12 vezes e exige reprovação, com o motivo certo, em todas |
 | `npm run tela` | o app abre nos dois temas, sem erro no console, e marcar tarefa mexe no progresso |
+| `npm run atualizacao` | que quem já instalou o app **recebe a versão nova sozinho** — sem reinstalar, sem limpar cache, sem apertar nada — e que o app ainda abre sem internet |
+| `npm run sabotagem-atualizacao` | que a conferência acima detecta falha: desliga cada peça da atualização automática, uma por vez, e exige reprovação nas cinco |
 
 Passar não prova que detecta falha — por isso a sabotagem existe.
 

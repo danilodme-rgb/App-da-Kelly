@@ -44,6 +44,19 @@ jobs:
           CHROMIUM_PATH: /usr/bin/google-chrome
         run: npm run tela
 
+      # A regra 11f é o alicerce do app, e regra sem maquinário não
+      # existe: sem este passo, trocar o service worker para cache-first
+      # deixa tudo verde e congela quem já instalou.
+      - name: O app instalado se atualiza sozinho
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: npm run atualizacao
+
+      - name: Provar essa conferência por sabotagem
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: npm run sabotagem-atualizacao
+
       - name: Guardar os prints
         if: always()
         uses: actions/upload-artifact@v4
