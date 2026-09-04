@@ -331,6 +331,12 @@ culpado é a auditoria de segurança que o `npm ci` dispara sozinha no fim.
 Está desligada em `.npmrc`, versionado, e não em flag repetida nos dois
 workflows: ajuste que só existe na máquina de alguém não viaja.
 
+Medido **no runner**, que é o que importa: o passo "Instalar as
+dependências" caiu de **3m04 para 3 segundos**, e o job de publicação
+inteiro, de 3m26 para **19 segundos**. A espera variava entre execuções
+(7m01, 7m01, 3m04) — trabalho de verdade não varia assim, espera de rede
+varia, e essa variação é parte da prova.
+
 ⚠ **Isso desligou um sinal, não uma trava**: a auditoria do `npm ci`
 imprime um aviso e nunca reprova o build, então não havia cobertura a
 perder. Querendo auditoria de verdade, ela entra como passo próprio que
